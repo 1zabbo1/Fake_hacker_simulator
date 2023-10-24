@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fake Hacker Simulator</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+        .terminal {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: black;
+            border: 2px solid green;
+            border-radius: 5px;
+            box-shadow: 0 0 10px green;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .input-label {
+            color: green;
+            padding-right: 10px;
+        }
+        .input-box {
+            color: green;
+            background-color: black;
+            border: 1px solid green;
+            border-radius: 3px;
+            padding: 5px;
+            width: 80%;
+        }
+        .output {
+            color: lightgreen;
+        }
+        .commands {
+            text-align: left;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal">
+        <pre>Welcome to the Fake Hacker Simulator</pre>
+        <div class="input-container">
+            <pre class="input-label">$&gt;</pre>
+            <input id="commandInput" class="input-box" onkeyup="processCommand(event)">
+        </div>
+    </div>
+
+    <div class="commands">
+        <pre><strong>Available Commands:</strong></pre>
+        <pre>$clearS - Clear command outputs</pre>
+        <pre>$Hack-(url) - Simulate hacking a URL</pre>
+        <pre>$makeV - Simulate creating a virus</pre>
+        <pre>$crackPass-(password) - Simulate password cracking</pre>
+    </div>
+
+    <script>
+        function processCommand(event) {
+            if (event.key === 'Enter') {
+                const commandInput = document.getElementById("commandInput");
+                const command = commandInput.value.trim();
+                const outputElement = document.createElement("pre");
+                outputElement.className = "output";
+
+                if (command === "$clearS") {
+                    const terminal = document.querySelector(".terminal");
+                    const commandOutputs = Array.from(terminal.getElementsByClassName("output"));
+                    commandOutputs.forEach(output => output.remove());
+                } else if (command.startsWith("$Hack-")) {
+                    const url = command.substring(6);
+                    outputElement.innerText = "Processing... " + url + " is hacked!";
+                } else if (command === "$makeV") {
+                    outputElement.innerText = "Virus is being created...";
+                } else if (command.startsWith("$crackPass-")) {
+                    const password = command.substring(11);
+                    outputElement.innerText = "Cracking password: " + password;
+                } else {
+                    outputElement.innerText = "Invalid command: " + command;
+                }
+
+                document.querySelector(".terminal").appendChild(outputElement);
+                commandInput.value = "";
+            }
+        }
+    </script>
+</body>
+</html>
